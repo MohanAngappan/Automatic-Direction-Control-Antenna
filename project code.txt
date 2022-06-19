@@ -1,0 +1,98 @@
+//contect on : Mohan angappan,
+	//LinkedIn: https://www.linkedin.com/in/mohan-angappan-491825130
+	//Twitter:https://twitter.com/MohanAngappan
+	//GitHub:https://github.com/MohanAngappan
+	//Gmail:almohan532001@gmail.com
+
+
+#include <IRremote.h>
+#include <Servo.h>
+int IRpin = 11;  // pin for the IR sensor
+int led1 = 2;
+int led2 = 4;
+int itsONled[] = {0, 0, 0, 0};
+#define code1 33484815 // code received from button no. 1
+#define code2 33462375 // code received from button no. 1
+IRrecv irrecv(IRpin);
+decode_results results;
+Servo myservo;
+void setup()
+{
+  Serial.begin(9600);
+  irrecv.enableIRIn(); // Start the receiver
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+}
+void loop()
+{
+  if (irrecv.decode(&results))
+  {
+    irrecv.resume();   // Receive the next value
+  }
+  if (results.value == 33480735)  // change according to your IR remote button number
+  {
+    myservo.write(0);
+    delay(15);
+  }
+  if (results.value == 33444015)  // change according  to your IR remote button number
+  {
+    myservo.write(30);
+    delay(15);
+  }
+  if (results.value == 33478695)  // change according  to your IR remote button number
+  {
+    myservo.write(60);
+    delay(15);
+  }
+  if (results.value == 33486855)  // change according  to your IR remote button number
+  {
+    myservo.write(90);
+    delay(15);
+  }
+  if (results.value == 33435855)  // change according  to your IR remote button number
+  {
+    myservo.write(120);
+    delay(15);
+  }
+  if (results.value == 33468495)  // change according  to your IR remote button number
+  {
+    myservo.write(150);
+    delay(15);
+  }
+  if (results.value == 33452175)  // change according  to your IR remote button number
+  {
+    myservo.write(180);
+    delay(15);
+  }
+  if (irrecv.decode(&results)) {
+    unsigned int value = results.value;
+    switch (value) {
+      case code1:
+        if (itsONled[1] == 1) { // if first led is on then
+          digitalWrite(led1, LOW); // turn it off when button is pressed
+          itsONled[1] = 0; // and set its state as off
+        } else { // else if first led is off
+          digitalWrite(led1, HIGH);
+          // turn it on when the button is pressed
+          itsONled[1] = 1; // and set its state as on
+        }
+        break;
+    }
+  }
+  if (irrecv.decode(&results)) {
+    unsigned int value = results.value;
+    switch (value) {
+      case code2:
+        if (itsONled[2] == 1) { // if first led is on then
+          digitalWrite(led2, LOW); // turn it off when button is pressed
+          itsONled[2] = 0; // and set its state as off
+        } else { // else if first led is off
+          digitalWrite(led2, HIGH);
+          // turn it on when the button is pressed
+          itsONled[2] = 1; // and set its state as on
+        }
+        break;
+    }
+  }
+}
